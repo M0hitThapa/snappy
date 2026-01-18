@@ -1,0 +1,23 @@
+{
+  "name": "snappy",
+  "scripts": {
+    "dev": "bun run --hot server/index.ts",
+    "format:write": "prettier . --write",
+    "format:check": "prettier . --check"
+  },
+  "dependencies": {
+    "hono": "^4.11.4"
+  },
+  "devDependencies": {
+    "@eslint/compat": "^2.0.1",
+    "@eslint/js": "^9.39.2",
+    "@ianvs/prettier-plugin-sort-imports": "^4.7.0",
+    "@types/bun": "latest",
+    "eslint": "^9.39.2",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-drizzle": "^0.2.3",
+    "globals": "^17.0.0",
+    "jiti": "^2.6.1",
+    "typescript-eslint": "^8.53.0"
+  }
+}

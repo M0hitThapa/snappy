@@ -6,13 +6,17 @@ import type { ErrorResponse } from "@/shared/types";
 
 import { authMiddleware } from "./middleware/auth-middleware";
 import { authRouter } from "./routes/auth";
+import { postRouter } from "./routes/posts";
 
 const app = new Hono();
 
 app.use("*", cors(), authMiddleware);
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-const routes = app.basePath("/api").route("/auth", authRouter);
+const routes = app
+  .basePath("/api")
+  .route("/auth", authRouter)
+  .route("/posts", postRouter);
 
 app.onError((err, c) => {
   if (err instanceof HTTPException) {

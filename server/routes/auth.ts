@@ -121,7 +121,7 @@ export const authRouter = new Hono<Context>()
     const session = c.get("session");
     if (!session) return c.redirect("/");
 
-    await db.delete(sessionTable).where(eq(sessionTable.id,session.id));
+    await db.delete(sessionTable).where(eq(sessionTable.id, session.id));
 
     c.header(
       "Set-Cookie",
@@ -130,9 +130,9 @@ export const authRouter = new Hono<Context>()
     return c.redirect("/");
   }).get("/users", authMiddleware, async (c) => {
     const user = c.get("user")!
-    return c.json<SuccessMessage<{username:string}>>({
-      success:true,
-      message:"User fetched",
-      data:{username:user.username}
+    return c.json<SuccessMessage<{ username: string }>>({
+      success: true,
+      message: "User fetched",
+      data: { username: user.username }
     })
   })

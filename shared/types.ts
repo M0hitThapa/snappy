@@ -39,8 +39,8 @@ export type sortBy = z.infer<typeof sortBySchema>;
 export type order = z.infer<typeof orderSchema>;
 
 export const paginationSchema = z.object({
-  page: z.coerce.number().optional().default(10),
-  limit: z.coerce.number().optional().default(1),
+  page: z.coerce.number().optional().default(1),
+  limit: z.coerce.number().optional().default(10),
   sortBy: sortBySchema.optional().default("points"),
   order: orderSchema.optional().default("desc"),
   author: z.optional(z.string()),
@@ -62,10 +62,10 @@ export type Post = {
   isUpvoted: boolean;
 };
 
-export type PaginationResponse<T> = { 
+export type PaginationResponse<T> = {
   pagination: {
-    page:number;
-    totalPage:number
-  },
-  data:T
-} & Omit<SuccessMessage, "data">
+    page: number;
+    totalPage: number;
+  };
+  data: T;
+} & Omit<SuccessMessage, "data">;

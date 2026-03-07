@@ -77,6 +77,9 @@ export const postRouter = new Hono<Context>()
         500,
       );
     }
+
+
+
     const postQuery = db.select({
       id: postsTable.id,
       title: postsTable.title,

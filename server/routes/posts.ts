@@ -10,8 +10,10 @@ import type { Context } from "@/utils/context";
 import { zValidator } from "@hono/zod-validator";
 
 import {
+  createCommentSchema,
   createPostSchema,
   paginationSchema,
+  type Comment,
   type PaginationResponse,
   type Post,
   type SuccessMessage,
@@ -19,6 +21,7 @@ import {
 import { getISOFormatDateQuery } from "@/lib/utils";
 import z from "zod";
 import { HTTPException } from "hono/http-exception";
+import { commentsTable } from "@/db/schemas/comments";
 
 export const postRouter = new Hono<Context>()
   .post(
@@ -171,5 +174,60 @@ export const postRouter = new Hono<Context>()
           data: { count: points, isUpvoted: pointsChange > 0 }
         }, 200
       )
-    })
+    }).post("/:id/comment", authMiddleware, zValidator("param", z.object({ id: z.coerce.number() })), zValidator("form", createCommentSchema),
+      async (c) => {
+        const { id } = c.req.valid("param");
+        const { content } = c.req.valid("form");
+        const user = c.get("user")!
+
+        const [comment] = await db.transaction(async (tx) => {
+          const [updated] = await tx.update(postsTable).set({ commentsCount: sql`${postsTable.commentsCount} + 1` }).where(eq(postsTable.id, id)).returning({ commentCount: postsTable.commentsCount })
+
+          if (!updated) {
+            throw new HTTPException(404, {
+              message: "post not found"
+            })
+          }
+          return await tx.insert(commentsTable).values({
+            content,
+            userId: user.id,
+            postId: id
+          })
+            .returning({
+              id: commentsTable.id,
+              userId: commentsTable.userId,
+              postId: commentsTable.postId,
+              content: commentsTable.content,
+              points: commentsTable.points,
+              depth: commentsTable.depth,
+              parentCommentId: commentsTable.parentCommentId,
+              createdAt: getISOFormatDateQuery(commentsTable.createdAt).as(
+                "created_at"
+              ),
+              commentCount: commentsTable.commentCount
+
+            });
+
+
+        })
+        return c.json<SuccessMessage<Comment>>({
+          success: true,
+          message: "comment created",
+          data: {
+            ...comment,
+            commentUpvotes: [],
+            childComments: [],
+            author: {
+              username: user.username,
+              id: user.id
+            }
+          } as Comment,
+        })
+
+
+
+
+
+
+      })
 

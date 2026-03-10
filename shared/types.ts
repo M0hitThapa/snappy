@@ -66,26 +66,24 @@ export type Post = {
 export const createCommentSchema = insertCommentSchema.pick({ content: true })
 
 export type Comment = {
-  id: number,
-  userId: string,
-  content: string,
-  points: number,
-  depth: number,
-  commentCount: number,
-  createdAt: string,
-  postId: number,
-  parentCommentId: number | null,
+  id: number;
+  userId: string;
+  content: string;
+  points: number;
+  depth: number;
+  commentCount: number;
+  createdAt: string;
+  postId: number;
+  parentCommentId: number | null;
   commentUpvotes: {
-    userId: string
-  }[],
+    userId: string;
+  }[];
   author: {
-    username: string,
-    id: string
-  },
-  childComments?: Comment[]
-
-
-}
+    username: string;
+    id: string;
+  };
+  childComments?: Comment[];
+};
 
 export type PaginationResponse<T> = {
   pagination: {

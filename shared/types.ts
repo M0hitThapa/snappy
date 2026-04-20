@@ -63,7 +63,7 @@ export type Post = {
   isUpvoted: boolean;
 };
 
-export const createCommentSchema = insertCommentSchema.pick({ content: true })
+export const createCommentSchema = insertCommentSchema.pick({ content: true });
 
 export type Comment = {
   id: number;

@@ -3,13 +3,16 @@
   "scripts": {
     "dev": "bun run --hot server/index.ts",
     "format:write": "prettier . --write",
-    "format:check": "prettier . --check"
+    "format:check": "prettier . --check",
+    "lint:frontend": "cd frontend && eslint .",
+    "lint:server": "cd server && eslint ."
   },
   "dependencies": {
     "@hono/zod-validator": "^0.7.6",
     "cookie": "^1.1.1",
     "drizzle-orm": "^0.45.1",
     "drizzle-zod": "^0.8.3",
+    "eslint-plugin-jsx-a11y": "^6.10.2",
     "hono": "^4.11.4",
     "postgres": "^3.4.8",
     "zod": "^4.3.6"
@@ -23,6 +26,7 @@
     "eslint": "^9.39.2",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-drizzle": "^0.2.3",
+    "eslint-plugin-tailwindcss": "^3.18.3",
     "globals": "^17.0.0",
     "jiti": "^2.6.1",
     "typescript-eslint": "^8.53.0"
